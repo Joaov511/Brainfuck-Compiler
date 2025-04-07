@@ -1,10 +1,13 @@
 #include "operators.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
-void nextBit(int *actualPosition) {
+void nextMemoryPtr(int *actualPosition) {
     (*actualPosition)++;
 }
 
-void previousBit(int *actualPosition) {
+void previousMemoryPtr(int *actualPosition) {
     (*actualPosition)--;
 }
 
@@ -16,7 +19,19 @@ void minusOperator(int *bits, int *actualPosition) {
     bits[*actualPosition]--;
 }
 
+int printOperator(int *bits, int *actualPosition) {
+    for(int i = 0; i < 1000; i++) {
+        if(bits[i] == 0) {
+            return 0;
+        }
+        printf("%c", (char)bits[i]);
+        fflush(stdout);
+        return 0;
+    }
+}
+
 void doOperation(char operator,int *bits, int *actualPosition) {
+    //printf("%c", operator);
     switch (operator)
     {
     case '+':
@@ -26,10 +41,13 @@ void doOperation(char operator,int *bits, int *actualPosition) {
         minusOperator(bits, actualPosition);
         break;
     case '>':
-        nextBit(actualPosition);
+        nextMemoryPtr(actualPosition);
         break;
     case '<':
-        previousBit(actualPosition);
+        previousMemoryPtr(actualPosition);
+        break;
+    case '.':
+        printOperator(bits, actualPosition);
         break;
     default:
         break;

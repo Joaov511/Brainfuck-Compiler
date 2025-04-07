@@ -1,48 +1,67 @@
 #include<stdio.h>
 #include<stdbool.h>
+#include <string.h>
 #include "operators.h"
 
 int main() {
-    char text[100];
-    int bits[100];
+    char text[1000];
+    int bits[30000] = {0};
+    int bitsLength = 100;
     int actualPosition = 0;
     char operators[] = {'>','<','+','-','[',']',',','.'};
 
-    void printIntArray(int *array) {
-        for(int i = 0; i < 10; i++) {  
-            printf("%i", array[i]);
-        }
-    }
 
     bool checkOperators(char character, char *operators) {
-        bool isOperator = true;
-        for(int i = 0; i < sizeof operators; i++) {           
+        int len = strlen(operators);
+        for(int i = 0; i < len; i++) {           
             if(character == operators[i]) {
                 return true;
             }
-            else {
-                isOperator = false;
-            }
         }
-        return isOperator;
+        return false;
     }
 
+    void loopOperator(char *array,int *bits, int *actualPosition) {
+        int positionLoopCloser = 0;
+        for(int i = *actualPosition; i < 1000; i++) {
+            if(text[i] == ']') {
+                positionLoopCloser = i;
+            }
+        }
+        (*actualPosition)++;
+        while(bits[*actualPosition] > 0) {
+            int currPosition = *actualPosition;
+            for(int i=currPosition; i < positionLoopCloser + 1; i++) {
+                if(checkOperators(array[i], operators)){
+                    doOperation(array[i], bits, actualPosition);
+                }
+            }
+            *actualPosition = currPosition;
+        }
+    }
+    
+
     void checkTheArray(char *array) {
-        for(int i = 0; i < sizeof array + 1; i++) {
-            if(checkOperators(array[i], operators)){
+        int arrayLength = strlen(array);
+        for(int i = 0; i < arrayLength; i++) {
+            if(array[i] == '[') {
+                actualPosition = i;
+                loopOperator(array,bits, &actualPosition);
+                i = actualPosition;
+            }
+            else if(checkOperators(array[i], operators)){
                 doOperation(array[i], bits, &actualPosition);
             }
         }
-        printf("%i", bits[0]);
-        printf("%i", bits[1]);
-        printf("%i", bits[2]);
-        printf("%i", actualPosition);
+/*         printf("%i\n", bits[0]);
+        printf("%i\n", bits[1]);
+        printf("%i\n", bits[2]); */
     }
 
     FILE *filePtr;
     filePtr = fopen("text.bfk", "r");
     
-    fgets(text, 100, filePtr);
+    fgets(text, 1000, filePtr);
     checkTheArray(text);
     fclose(filePtr);
 
