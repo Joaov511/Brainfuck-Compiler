@@ -9,7 +9,7 @@ int main() {
     int bitsLength = 100;
     int actualPosition = 0;
     char operators[] = {'>','<','+','-','[',']',',','.'};
-
+    struct BrainfuckOperator operator;
 
     bool checkOperators(char character, char *operators) {
         int len = strlen(operators);
@@ -21,39 +21,19 @@ int main() {
         return false;
     }
 
-    void loopOperator(char *array,int *bits, int *actualPosition) {
-        int positionLoopCloser = 0;
-        for(int i = *actualPosition; i < 1000; i++) {
-            if(text[i] == ']') {
-                positionLoopCloser = i;
-            }
-        }
-        (*actualPosition)++;
-        while(bits[*actualPosition] > 0) {
-            int currPosition = *actualPosition;
-            for(int i=currPosition; i < positionLoopCloser + 1; i++) {
-                if(checkOperators(array[i], operators)){
-                    doOperation(array[i], bits, actualPosition);
-                }
-            }
-            *actualPosition = currPosition;
-        }
-    }
-    
 
-    void checkTheArray(char *array) {
+    void checkTheArray(char *array, struct BrainfuckOperator *operator) {
         int arrayLength = strlen(array);
         for(int i = 0; i < arrayLength; i++) {
-            if(array[i] == '[') {
-                actualPosition = i;
-                loopOperator(array,bits, &actualPosition);
-                i = actualPosition;
-            }
-            else if(checkOperators(array[i], operators)){
-                doOperation(array[i], bits, &actualPosition);
+            if(checkOperators(array[i], operators)){
+                operator->bits = bits;
+                operator->actualPosition = &actualPosition;
+                operator->text = array;
+                operator->operator = array[i];
+                doOperation(operator);
             }
         }
-/*         printf("%i\n", bits[0]);
+/*      printf("%i\n", bits[0]);
         printf("%i\n", bits[1]);
         printf("%i\n", bits[2]); */
     }
@@ -62,7 +42,7 @@ int main() {
     filePtr = fopen("text.bfk", "r");
     
     fgets(text, 1000, filePtr);
-    checkTheArray(text);
+    checkTheArray(text, &operator);
     fclose(filePtr);
 
     return 0;

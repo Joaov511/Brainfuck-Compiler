@@ -3,51 +3,50 @@
 #include <stdio.h>
 #include <string.h>
 
-void nextMemoryPtr(int *actualPosition) {
-    (*actualPosition)++;
+void nextMemoryPtr(struct BrainfuckOperator *operator) {
+    (*operator->actualPosition)++;
 }
 
-void previousMemoryPtr(int *actualPosition) {
-    (*actualPosition)--;
+void previousMemoryPtr(struct BrainfuckOperator *operator) {
+    (*operator->actualPosition)--;
 }
 
-void plusOperator(int *bits, int *actualPosition) {
-    bits[*actualPosition]++;
+void plusOperator(struct BrainfuckOperator *operator) {
+   operator->bits[*operator->actualPosition]++;
 }
 
-void minusOperator(int *bits, int *actualPosition) {
-    bits[*actualPosition]--;
+void minusOperator(struct BrainfuckOperator *operator) {
+   operator->bits[*operator->actualPosition]--;
 }
 
-int printOperator(int *bits, int *actualPosition) {
+int printOperator(struct BrainfuckOperator *operator) {
     for(int i = 0; i < 1000; i++) {
-        if(bits[i] == 0) {
+        if(operator->bits[i] == 0) {
             return 0;
         }
-        printf("%c", (char)bits[i]);
+        printf("%c", (char)operator->bits[i]);
         fflush(stdout);
         return 0;
     }
 }
 
-void doOperation(char operator,int *bits, int *actualPosition) {
-    //printf("%c", operator);
-    switch (operator)
+void doOperation(struct BrainfuckOperator *operator) {
+    switch (operator->operator)
     {
     case '+':
-        plusOperator(bits, actualPosition);
+        plusOperator(operator);
         break;
     case '-':
-        minusOperator(bits, actualPosition);
+        minusOperator(operator);
         break;
     case '>':
-        nextMemoryPtr(actualPosition);
+        nextMemoryPtr(operator);
         break;
     case '<':
-        previousMemoryPtr(actualPosition);
+        previousMemoryPtr(operator);
         break;
     case '.':
-        printOperator(bits, actualPosition);
+        printOperator(operator);
         break;
     default:
         break;
