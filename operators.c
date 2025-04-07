@@ -12,22 +12,16 @@ void previousMemoryPtr(struct BrainfuckOperator *operator) {
 }
 
 void plusOperator(struct BrainfuckOperator *operator) {
-   operator->bits[*operator->actualPosition]++;
+    operator->bits[*operator->actualPosition]++;
 }
 
 void minusOperator(struct BrainfuckOperator *operator) {
    operator->bits[*operator->actualPosition]--;
 }
 
-int printOperator(struct BrainfuckOperator *operator) {
-    for(int i = 0; i < 1000; i++) {
-        if(operator->bits[i] == 0) {
-            return 0;
-        }
-        printf("%c", (char)operator->bits[i]);
-        fflush(stdout);
-        return 0;
-    }
+void printOperator(struct BrainfuckOperator *operator) {
+    printf("%c\n", (char)operator->bits[*operator->actualPosition]);
+    fflush(stdout);
 }
 
 void doOperation(struct BrainfuckOperator *operator) {

@@ -1,49 +1,70 @@
 #include<stdio.h>
 #include<stdbool.h>
-#include <string.h>
+#include<string.h>
+#include<stdlib.h>
+#include<time.h>
 #include "operators.h"
 
-int main() {
-    char text[1000];
-    int bits[30000] = {0};
-    int bitsLength = 100;
+bool checkOperators(char character, char *operators);
+void readBrainfuckFile(char *array, char *operators, struct BrainfuckOperator *operator);
+
+int main(int argc, char **argv) {
+    clock_t start = clock();
+    int fileContent = 1000;
+    char *fileContentPointer = malloc(fileContent);
+    if (fileContentPointer == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        return 1;
+    }
+    memset(fileContentPointer, 0, fileContent);
+    
+    int bits = 3000;
+    int *bitsPointer = malloc(bits * sizeof(*bitsPointer));
+    if (bitsPointer == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        return 1;
+    }
+    memset(bitsPointer, 0, bits * sizeof(*bitsPointer));
+
     int actualPosition = 0;
     char operators[] = {'>','<','+','-','[',']',',','.'};
     struct BrainfuckOperator operator;
 
-    bool checkOperators(char character, char *operators) {
-        int len = strlen(operators);
-        for(int i = 0; i < len; i++) {           
-            if(character == operators[i]) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    void checkTheArray(char *array, struct BrainfuckOperator *operator) {
-        int arrayLength = strlen(array);
-        for(int i = 0; i < arrayLength; i++) {
-            if(checkOperators(array[i], operators)){
-                operator->bits = bits;
-                operator->actualPosition = &actualPosition;
-                operator->text = array;
-                operator->operator = array[i];
-                doOperation(operator);
-            }
-        }
-/*      printf("%i\n", bits[0]);
-        printf("%i\n", bits[1]);
-        printf("%i\n", bits[2]); */
-    }
+    operator.bits = bitsPointer;
+    operator.actualPosition = &actualPosition;
 
     FILE *filePtr;
     filePtr = fopen("text.bfk", "r");
-    
-    fgets(text, 1000, filePtr);
-    checkTheArray(text, &operator);
-    fclose(filePtr);
+    fread(fileContentPointer, 1, 1000, filePtr);
+    readBrainfuckFile(fileContentPointer,operators, &operator);
 
+    clock_t stop = clock();
+    double elapsed = (double)(stop - start) * 1000.0 / CLOCKS_PER_SEC;
+    printf("Time elapsed in ms: %f", elapsed);
+
+    free(fileContentPointer);
+    free(bitsPointer);
+    fclose(filePtr);
     return 0;
+}
+
+bool checkOperators(char character, char *operators) {
+    int len = strlen(operators);
+    for(int i = 0; i < len; i++) {           
+        if(character == operators[i]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void readBrainfuckFile(char *array,char *operators, struct BrainfuckOperator *operator) {
+    int arrayLength = strlen(array);
+    for(int i = 0; i < arrayLength; i++) {
+        if(checkOperators(array[i], operators)){
+            operator->text = array;
+            operator->operator = array[i];
+            doOperation(operator);
+        }
+    }
 }
