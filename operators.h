@@ -3,7 +3,7 @@
 
 struct BrainfuckOperator {
     int *bits;
-    int *actualPosition;
+    int *currentPosition;
     char operator;
     char *text;
 };

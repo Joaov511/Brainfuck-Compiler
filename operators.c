@@ -4,24 +4,23 @@
 #include <string.h>
 
 void nextMemoryPtr(struct BrainfuckOperator *operator) {
-    (*operator->actualPosition)++;
+    (*operator->currentPosition)++;
 }
 
 void previousMemoryPtr(struct BrainfuckOperator *operator) {
-    (*operator->actualPosition)--;
+    (*operator->currentPosition)--;
 }
 
 void plusOperator(struct BrainfuckOperator *operator) {
-    operator->bits[*operator->actualPosition]++;
+    operator->bits[*operator->currentPosition]++;
 }
 
 void minusOperator(struct BrainfuckOperator *operator) {
-   operator->bits[*operator->actualPosition]--;
+   operator->bits[*operator->currentPosition]--;
 }
 
 void printOperator(struct BrainfuckOperator *operator) {
-    printf("%c\n", (char)operator->bits[*operator->actualPosition]);
-    fflush(stdout);
+    printf("%c", (char)operator->bits[*operator->currentPosition]);
 }
 
 void doOperation(struct BrainfuckOperator *operator) {

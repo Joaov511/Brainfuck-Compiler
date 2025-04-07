@@ -26,12 +26,12 @@ int main(int argc, char **argv) {
     }
     memset(bitsPointer, 0, bits * sizeof(*bitsPointer));
 
-    int actualPosition = 0;
+    int currentPosition = 0;
     char operators[] = {'>','<','+','-','[',']',',','.'};
     struct BrainfuckOperator operator;
 
     operator.bits = bitsPointer;
-    operator.actualPosition = &actualPosition;
+    operator.currentPosition = &currentPosition;
 
     FILE *filePtr;
     filePtr = fopen("text.bfk", "r");
