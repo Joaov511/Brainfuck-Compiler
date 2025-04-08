@@ -1,5 +1,4 @@
 #include "operators.h"
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -23,6 +22,46 @@ void printOperator(struct BrainfuckOperator *operator) {
     printf("%c", (char)operator->bits[*operator->currentPosition]);
 }
 
+int getEndOfLoopPosition(struct BrainfuckOperator *operator) {
+    for(int i = *operator->filePosition; i < 1000; i++) {
+        if(operator->text[i] == ']') {
+            return i;
+        }
+    }
+    return -1;
+}
+
+void loopOperator(struct BrainfuckOperator *operator) {
+
+    int initialLoopPosition = (*operator->filePosition);
+    int loopEndPosition = getEndOfLoopPosition(operator);
+
+    if(loopEndPosition == -1) {
+        fprintf(stderr, "Error: No matching closing bracket\n");
+        return;
+    }
+
+    if(operator->bits[*operator->currentPosition] == 0) {
+        *operator->filePosition = loopEndPosition;
+    }
+    else {
+        while(operator->bits[*operator->currentPosition] != 0) {
+            int tempFilePosition = *operator->filePosition;
+            *operator->filePosition = initialLoopPosition + 1; 
+            
+            while (*operator->filePosition != loopEndPosition) {
+                operator->operator = operator->text[*operator->filePosition];
+                doOperation(operator);
+                (*operator->filePosition)++; 
+            }
+            *operator->filePosition = tempFilePosition;
+        }
+        
+        *operator->filePosition = loopEndPosition;
+    }
+    (*operator->filePosition)++;
+}
+
 void doOperation(struct BrainfuckOperator *operator) {
     switch (operator->operator)
     {
@@ -40,6 +79,9 @@ void doOperation(struct BrainfuckOperator *operator) {
         break;
     case '.':
         printOperator(operator);
+        break;
+    case '[':
+        loopOperator(operator);
         break;
     default:
         break;

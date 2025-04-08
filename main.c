@@ -1,8 +1,8 @@
-#include<stdio.h>
-#include<stdbool.h>
-#include<string.h>
-#include<stdlib.h>
-#include<time.h>
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
 #include "operators.h"
 
 bool checkOperators(char character, char *operators);
@@ -10,6 +10,7 @@ void readBrainfuckFile(char *array, char *operators, struct BrainfuckOperator *o
 
 int main(int argc, char **argv) {
     clock_t start = clock();
+
     int fileContent = 1000;
     char *fileContentPointer = malloc(fileContent);
     if (fileContentPointer == NULL) {
@@ -34,13 +35,20 @@ int main(int argc, char **argv) {
     operator.currentPosition = &currentPosition;
 
     FILE *filePtr;
-    filePtr = fopen("text.bfk", "r");
+    filePtr = fopen(argv[1], "r");
     fread(fileContentPointer, 1, 1000, filePtr);
     readBrainfuckFile(fileContentPointer,operators, &operator);
 
     clock_t stop = clock();
     double elapsed = (double)(stop - start) * 1000.0 / CLOCKS_PER_SEC;
     printf("Time elapsed in ms: %f", elapsed);
+    printf("%i\n", bitsPointer[0]);
+    printf("%i\n", bitsPointer[1]);
+    printf("%i\n", bitsPointer[2]);
+    printf("%i\n", bitsPointer[3]);
+    printf("%i\n", bitsPointer[4]);
+    printf("%i\n", bitsPointer[5]);
+    
 
     free(fileContentPointer);
     free(bitsPointer);
@@ -64,6 +72,7 @@ void readBrainfuckFile(char *array,char *operators, struct BrainfuckOperator *op
         if(checkOperators(array[i], operators)){
             operator->text = array;
             operator->operator = array[i];
+            operator->filePosition = &i;
             doOperation(operator);
         }
     }

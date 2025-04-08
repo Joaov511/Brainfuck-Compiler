@@ -6,6 +6,7 @@ struct BrainfuckOperator {
     int *currentPosition;
     char operator;
     char *text;
+    int *filePosition;
 };
 
 void nextMemoryPtr(struct BrainfuckOperator *operator);
