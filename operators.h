@@ -5,7 +5,7 @@ struct BrainfuckOperator {
     int *bits;
     int *currentPosition;
     char operator;
-    char *text;
+    char *brainfuckCode;
     int *filePosition;
 };
 

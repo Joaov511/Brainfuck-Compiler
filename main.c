@@ -70,7 +70,7 @@ void readBrainfuckFile(char *array,char *operators, struct BrainfuckOperator *op
     int arrayLength = strlen(array);
     for(int i = 0; i < arrayLength; i++) {
         if(checkOperators(array[i], operators)){
-            operator->text = array;
+            operator->brainfuckCode = array;
             operator->operator = array[i];
             operator->filePosition = &i;
             doOperation(operator);

@@ -24,7 +24,7 @@ void printOperator(struct BrainfuckOperator *operator) {
 
 int getEndOfLoopPosition(struct BrainfuckOperator *operator) {
     for(int i = *operator->filePosition; i < 1000; i++) {
-        if(operator->text[i] == ']') {
+        if(operator->brainfuckCode[i] == ']') {
             return i;
         }
     }
@@ -50,7 +50,7 @@ void loopOperator(struct BrainfuckOperator *operator) {
             *operator->filePosition = initialLoopPosition + 1; 
             
             while (*operator->filePosition != loopEndPosition) {
-                operator->operator = operator->text[*operator->filePosition];
+                operator->operator = operator->brainfuckCode[*operator->filePosition];
                 doOperation(operator);
                 (*operator->filePosition)++; 
             }
