@@ -11,13 +11,13 @@ void readBrainfuckFile(char *array, char *operators, struct BrainfuckOperator *o
 int main(int argc, char **argv) {
     clock_t start = clock();
 
-    const int fileContent = 1000;
-    char *fileContentPointer = malloc(fileContent);
-    if (fileContentPointer == NULL) {
+    const int fileContentSize = 1000;
+    char *fileContent = malloc(fileContentSize);
+    if (fileContent == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
         return 1;
     }
-    memset(fileContentPointer, 0, fileContent);
+    memset(fileContent, 0, fileContentSize);
     
     const int memoryTapeSize = 3000;
     int *memoryTape = malloc(memoryTapeSize * sizeof(*memoryTape));
@@ -36,8 +36,8 @@ int main(int argc, char **argv) {
 
     FILE *filePtr;
     filePtr = fopen(argv[1], "r");
-    fread(fileContentPointer, 1, 1000, filePtr);
-    readBrainfuckFile(fileContentPointer,operators, &operator);
+    fread(fileContent, 1, 1000, filePtr);
+    readBrainfuckFile(fileContent,operators, &operator);
 
     clock_t stop = clock();
     double elapsed = (double)(stop - start) * 1000.0 / CLOCKS_PER_SEC;
@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
     printf("%i\n", memoryTape[5]);
     
 
-    free(fileContentPointer);
+    free(fileContent);
     free(memoryTape);
     fclose(filePtr);
     return 0;
