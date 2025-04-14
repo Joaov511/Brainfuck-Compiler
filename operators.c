@@ -11,15 +11,15 @@ void previousMemoryPtr(struct BrainfuckOperator *operator) {
 }
 
 void plusOperator(struct BrainfuckOperator *operator) {
-    operator->bits[*operator->currentPosition]++;
+    operator->memoryTape[*operator->currentPosition]++;
 }
 
 void minusOperator(struct BrainfuckOperator *operator) {
-   operator->bits[*operator->currentPosition]--;
+   operator->memoryTape[*operator->currentPosition]--;
 }
 
 void printOperator(struct BrainfuckOperator *operator) {
-    printf("%c", (char)operator->bits[*operator->currentPosition]);
+    printf("%c", (char)operator->memoryTape[*operator->currentPosition]);
 }
 
 int getEndOfLoopPosition(struct BrainfuckOperator *operator) {
@@ -41,11 +41,11 @@ void loopOperator(struct BrainfuckOperator *operator) {
         return;
     }
 
-    if(operator->bits[*operator->currentPosition] == 0) {
+    if(operator->memoryTape[*operator->currentPosition] == 0) {
         *operator->filePosition = loopEndPosition;
     }
     else {
-        while(operator->bits[*operator->currentPosition] != 0) {
+        while(operator->memoryTape[*operator->currentPosition] != 0) {
             int tempFilePosition = *operator->filePosition;
             *operator->filePosition = initialLoopPosition + 1; 
             

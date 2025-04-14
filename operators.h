@@ -2,7 +2,7 @@
 #define operators_h
 
 struct BrainfuckOperator {
-    int *bits;
+    int *memoryTape;
     int *currentPosition;
     char operator;
     char *brainfuckCode;

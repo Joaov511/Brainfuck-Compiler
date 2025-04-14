@@ -11,7 +11,7 @@ void readBrainfuckFile(char *array, char *operators, struct BrainfuckOperator *o
 int main(int argc, char **argv) {
     clock_t start = clock();
 
-    int fileContent = 1000;
+    const int fileContent = 1000;
     char *fileContentPointer = malloc(fileContent);
     if (fileContentPointer == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
@@ -19,19 +19,19 @@ int main(int argc, char **argv) {
     }
     memset(fileContentPointer, 0, fileContent);
     
-    int bits = 3000;
-    int *bitsPointer = malloc(bits * sizeof(*bitsPointer));
-    if (bitsPointer == NULL) {
+    const int memoryTapeSize = 3000;
+    int *memoryTape = malloc(memoryTapeSize * sizeof(*memoryTape));
+    if (memoryTape == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
         return 1;
     }
-    memset(bitsPointer, 0, bits * sizeof(*bitsPointer));
+    memset(memoryTape, 0, memoryTapeSize * sizeof(*memoryTape));
 
     int currentPosition = 0;
     char operators[] = {'>','<','+','-','[',']',',','.'};
     struct BrainfuckOperator operator;
 
-    operator.bits = bitsPointer;
+    operator.memoryTape = memoryTape;
     operator.currentPosition = &currentPosition;
 
     FILE *filePtr;
@@ -42,16 +42,16 @@ int main(int argc, char **argv) {
     clock_t stop = clock();
     double elapsed = (double)(stop - start) * 1000.0 / CLOCKS_PER_SEC;
     printf("Time elapsed in ms: %f", elapsed);
-    printf("%i\n", bitsPointer[0]);
-    printf("%i\n", bitsPointer[1]);
-    printf("%i\n", bitsPointer[2]);
-    printf("%i\n", bitsPointer[3]);
-    printf("%i\n", bitsPointer[4]);
-    printf("%i\n", bitsPointer[5]);
+    printf("%i\n", memoryTape[0]);
+    printf("%i\n", memoryTape[1]);
+    printf("%i\n", memoryTape[2]);
+    printf("%i\n", memoryTape[3]);
+    printf("%i\n", memoryTape[4]);
+    printf("%i\n", memoryTape[5]);
     
 
     free(fileContentPointer);
-    free(bitsPointer);
+    free(memoryTape);
     fclose(filePtr);
     return 0;
 }
