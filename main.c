@@ -36,18 +36,18 @@ int main(int argc, char **argv) {
 
     FILE *filePtr;
     filePtr = fopen(argv[1], "r");
-    fread(fileContent, 1, 1000, filePtr);
+    fread(fileContent, 1, fileContentSize, filePtr);
     readBrainfuckFile(fileContent,operators, &operator);
 
     clock_t stop = clock();
     double elapsed = (double)(stop - start) * 1000.0 / CLOCKS_PER_SEC;
-    printf("Time elapsed in ms: %f", elapsed);
+/*     printf("Time elapsed in ms: %f", elapsed);
     printf("%i\n", memoryTape[0]);
     printf("%i\n", memoryTape[1]);
     printf("%i\n", memoryTape[2]);
     printf("%i\n", memoryTape[3]);
     printf("%i\n", memoryTape[4]);
-    printf("%i\n", memoryTape[5]);
+    printf("%i\n", memoryTape[5]); */
     
 
     free(fileContent);
